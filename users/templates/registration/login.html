@@ -1,0 +1,32 @@
+{% extends 'learning_logs/base.html' %}
+{% load bootstrap3 %}
+
+{% if request.user.is_authenticated %}
+  <p>You've signed up already</p>
+  <input type="hidden" name="next" value="{% url 'learning_logs:index' %}">
+{%else%}
+
+
+  {% block header %}
+  <h2>Sign In</h2>
+  {% endblock %}
+
+  {% block content %} 
+
+  <!-->{% if form.errors %}
+    <p>Your username and password did'nt match. Please try again</p>
+  {% endif %}<!-->
+  <form action="{% url 'users:login'  %}" method="post"  class="form" style="width: 300px">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      {% comment %} {{form.as_p}} {% endcomment %}
+
+      {% buttons %}
+      <button name='submit' class="btn btn-primary">Sign In</button>
+      {% endbuttons %}
+      <input type="hidden" name="next" value="{% url 'learning_logs:index' %}">
+  </form>
+
+  <p>Don't have an account? <a href="{% url 'users:register' %}">Sign Up</a></p>
+  {% endblock %}
+{% endif %}
